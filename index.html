@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>GoJULI — Travel Diary & Travel Buddies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="GoJULI is a travel diary with shared expenses and travel buddies. Plan trips, track payments, and build your travel community." />
+  <link rel="icon" href="assets/icon.png" />
+  <meta property="og:title" content="GoJULI — Travel Diary & Travel Buddies" />
+  <meta property="og:description" content="Plan trips, split costs, and keep a beautiful diary with your travel buddies." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/jacaranda_proposal.png" />
+  <style>
+    :root{
+      /* Brand palette tuned for higher contrast */
+      --brand: #CE93BF;           /* base */
+      --brand-strong: #B57AA7;    /* darker */
+      --accent: #A06E96;          /* deepest */
+
+      --ink: #1e1523;             /* main text */
+      --ink-muted: #6d6573;       /* muted text */
+
+      --bg:#f7f2f7;               /* tinted background */
+      --bg2:#f0e7f1;              /* deeper tint */
+
+      --surface:#fcf9fd;          /* card surface */
+      --surface-tint: rgba(206,147,191,0.12);
+      --border: rgba(95, 58, 86, 0.18);
+      --ring: rgba(206,147,191,.45);
+      --ring-strong: rgba(160,110,150,.65);
+      --shadow: 0 12px 30px -14px rgba(48,16,40,.25);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 380px at 100% 0%, rgba(206,147,191,0.18), transparent 70%),
+        radial-gradient(700px 320px at 0% 100%, rgba(160,110,150,0.14), transparent 70%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+    }
+
+    a{color:var(--accent);text-decoration:none;transition:opacity .2s ease, filter .2s ease}
+    a:hover{opacity:.92;filter:saturate(1.05)}
+
+    .container{max-width:1120px;margin:0 auto;padding:24px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+
+    .logo{display:flex;align-items:center;gap:12px;font-weight:900;font-size:18px;letter-spacing:.2px;color:var(--accent)}
+    .logo-badge{
+      width:36px;height:36px;border-radius:12px;overflow:hidden;
+      background:
+        radial-gradient(55% 55% at 30% 30%, #fff6, transparent 60%),
+        linear-gradient(145deg, var(--brand) 0%, var(--accent) 100%);
+      display:grid;place-items:center;
+      border:1px solid rgba(0,0,0,0.07);
+      box-shadow:0 16px 30px -16px var(--ring);
+    }
+    .logo-badge img{width:100%;height:100%;object-fit:cover}
+
+    .nav-cta{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* CHIPS: higher contrast, brand-tinted */
+    .chip{
+      --chip-grad: linear-gradient(135deg, rgba(206,147,191,0.18), rgba(160,110,150,0.18));
+      padding:8px 14px;border-radius:999px;
+      background:var(--chip-grad);
+      border:1px solid var(--border);
+      color:var(--accent);font-weight:700;font-size:14px;
+      box-shadow:0 8px 22px -16px var(--ring);
+      backdrop-filter:saturate(1.1) blur(2px);
+      transition: box-shadow .2s ease, transform .12s ease;
+    }
+    .chip:hover{box-shadow:0 10px 26px -16px var(--ring-strong);transform:translateY(-1px)}
+    .chip:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+
+    .hero{display:grid;gap:26px;grid-template-columns:1.2fr .8fr;align-items:center;padding:44px 0}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+
+    h1{font-size:46px;line-height:1.06;margin:0 0 12px;letter-spacing:.2px}
+    .lead{color:var(--ink-muted);font-size:18px}
+    .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+
+    /* BUTTONS: solid brand gradient + improved contrast */
+    .btn{
+      padding:12px 16px;border-radius:14px;
+      background:linear-gradient(180deg, #ffffff 0%, #f7f2f7 100%);
+      color:var(--ink);
+      font-weight:900;letter-spacing:.2px;
+      display:inline-flex;align-items:center;gap:10px;
+      box-shadow:0 12px 28px -18px rgba(0,0,0,.25);
+      transition:transform .12s ease, box-shadow .12s ease, filter .18s ease;
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 16px 34px -18px rgba(0,0,0,.28);filter:saturate(1.02)}
+    .btn:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+
+    .btn.primary{
+      border-color:transparent;color:#23131f;
+      background:
+        radial-gradient(60% 100% at 100% 0%, rgba(255,255,255,.9) 0%, transparent 70%),
+        linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+      color:#fff;
+      text-shadow:0 1px 0 rgba(0,0,0,0.15);
+      box-shadow:0 18px 34px -16px var(--ring);
+    }
+    .btn.primary:hover{box-shadow:0 24px 40px -18px var(--ring-strong)}
+    .btn .icon{width:18px;height:18px;object-fit:cover;border-radius:4px}
+
+    /* CARDS: softer, tinted surfaces with clearer borders */
+    .card{
+      background:linear-gradient(180deg, var(--surface) 0%, rgba(255,255,255,0.92) 100%), var(--surface);
+      border:1px solid var(--border);
+      border-radius:18px;padding:18px;
+      box-shadow: var(--shadow);
+    }
+
+    .features{display:grid;gap:16px;grid-template-columns:repeat(3,1fr);margin-top:32px}
+    @media (max-width:900px){.features{grid-template-columns:1fr}}
+    .feat h3{margin:8px 0 6px;font-size:18px;color:var(--accent)}
+    .muted{color:var(--ink-muted)}
+
+    .feat-icon{
+      width:44px;height:44px;border-radius:12px;overflow:hidden;
+      background:
+        radial-gradient(50% 60% at 30% 30%, rgba(255,255,255,.6), transparent 60%),
+        linear-gradient(140deg, var(--brand) 0%, var(--accent) 100%);
+      display:grid;place-items:center;border:1px solid rgba(0,0,0,.06);
+      box-shadow:0 14px 28px -18px var(--ring);
+    }
+    .feat-icon img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+
+    .shot{
+      aspect-ratio:16/10;border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.96));
+      border:1px solid var(--border);
+      position:relative;overflow:hidden;display:grid;place-items:center;
+      box-shadow: var(--shadow);
+    }
+    .shot img{width:100%;height:100%;object-fit:cover}
+    .shot::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, rgba(255,255,255,.0) 60%, rgba(0,0,0,.06))}
+
+    .foot{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:40px;color:var(--ink-muted);font-size:14px}
+    .badges{display:flex;gap:10px;flex-wrap:wrap}
+
+    /* BADGES: brand micro-pills */
+    .badge{
+      --badge-grad: linear-gradient(135deg, rgba(206,147,191,0.22), rgba(160,110,150,0.22));
+      padding:6px 12px;border-radius:999px;
+      background:var(--badge-grad);
+      border:1px solid var(--border);
+      color:var(--accent);font-weight:700
+    }
+    .badge:hover{box-shadow:0 10px 24px -16px var(--ring)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="nav">
+      <div class="logo">
+        <div class="logo-badge" aria-hidden="true">
+          <img src="assets/icon.png" alt="GoJULI icon" />
+        </div>
+        GoJULI
+      </div>
+      <div class="nav-cta">
+        <a class="chip" href="privacy.html">Privacy</a>
+        <a class="chip" href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <h1>Travel diary</h1>
+        <p class="lead">Plan trips, split costs fairly, and keep a beautiful diary with your crew. Build your travel community and remember every moment.</p>
+
+        <div class="cta">
+          <!-- 替换为真实商店链接 -->
+          <a class="btn primary" href="#" aria-disabled="true">
+            Download on App Store
+          </a>
+          <a class="btn primary" href="#" aria-disabled="true">
+            Get it on Google Play
+          </a>
+        </div>
+
+        <div class="badges" style="margin-top:14px">
+          <span class="badge">Travel buddies</span>
+          <span class="badge">Shared expenses</span>
+          <span class="badge">Diary records</span>
+          <span class="badge">Multi-language</span>
+        </div>
+      </div>
+
+      <!-- 右侧展示图：欢迎页或产品截图 -->
+      <div class="card shot">
+        <img src="assets/juli_welcome.png" alt="GoJULI preview" />
+      </div>
+    </section>
+
+    <section aria-label="features">
+      <div class="features">
+        <div class="card feat">
+          <div class="feat-icon">
+            <img src="assets/juli_and_99.png" alt="Community" />
+          </div>
+          <h3>Travel buddies</h3>
+          <p class="muted">Invite friends to your diary, see who’s on the trip, and coordinate plans together. Keep everyone in sync.</p>
+        </div>
+
+        <div class="card feat">
+          <div class="feat-icon">
+            <img src="assets/juli_happy.png" alt="Diary" />
+          </div>
+          <h3>Diary records</h3>
+          <p class="muted">Capture moments, add notes, and link them to your trip schedules. Your stories stay organized and easy to revisit.</p>
+        </div>
+
+        <div class="card feat">
+          <div class="feat-icon">
+            <img src="assets/juli_say_no.png" alt="Expenses & AA split" />
+          </div>
+          <h3>Expenses</h3>
+          <p class="muted">Record expense items, pick participants, and GoJULI automatically calculates equal-share amounts with a transparent breakdown.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:40px">
+      <div class="card">
+        <h3 style="margin:0 0 8px">Contact</h3>
+        <p class="muted">Questions or feedback? Email us at
+          <a href="mailto:spideycj020405@gmail.com">spideycj020405@gmail.com</a></p>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <div>© <span id="y"></span> GoJULI</div>
+      <div class="badges">
+        <a class="badge" href="privacy.html">Privacy Policy</a>
+      </div>
+    </footer>
+  </div>
+  <script>document.getElementById("y").textContent=new Date().getFullYear()</script>
+</body>
+</html>
