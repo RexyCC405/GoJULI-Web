@@ -4,119 +4,239 @@
   <meta charset="utf-8" />
   <title>GoJULI — Privacy Policy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="GoJULI Privacy Policy — how we collect, use, share, and protect your data." />
   <style>
-    :root{
-      --ink:#17131b;--muted:#63616a;--brand:#A06E96
-    }
+    :root{ --ink:#17131b; --muted:#63616a; --brand:#A06E96; --chip-bg:#f1eef3; --chip-bd:#e5e0e9 }
+    @media (prefers-color-scheme: dark){ :root{ --ink:#f3eef7; --muted:#c9c0cc; --chip-bg:#2a2030; --chip-bd:#3a2c41; background:#120e15 } }
+    html,body{height:100%}
     body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;color:var(--ink);background:#fff}
     .wrap{max-width:880px;margin:0 auto;padding:28px}
     h1{margin:0 0 6px} h2{margin:24px 0 10px} h3{margin:18px 0 8px}
     p,li{line-height:1.65}
     a{color:#0b6cff;text-decoration:none}
     .muted{color:var(--muted)}
-    .back{display:inline-block;margin-bottom:14px}
-    .tag{display:inline-block;font-size:12px;padding:.2rem .5rem;border-radius:999px;background:#f1eef3;color:#5b4760;border:1px solid #e5e0e9;margin-left:.25rem}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .back{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px}
+    .tag{display:inline-block;font-size:12px;padding:.2rem .5rem;border-radius:999px;background:var(--chip-bg);color:#5b4760;border:1px solid var(--chip-bd);margin-left:.25rem}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
     @media (max-width:800px){.grid{grid-template-columns:1fr}}
     .card{border:1px solid #eee;border-radius:12px;padding:14px 16px;background:#fafafa}
     .k{font-weight:700}
     ul.tight>li{margin:.25rem 0}
+    /* language chip */
+    .chip{cursor:pointer;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--chip-bd);background:var(--chip-bg);color:#5b4760;border-radius:999px;padding:8px 12px;font-weight:700}
+    .chip:focus-visible{outline:3px solid rgba(160,110,150,.4);outline-offset:2px}
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--brand)}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <a class="back" href="index.html">← Back to Home</a>
-    <h1>Privacy Policy</h1>
-    <p class="muted">Last updated: <span id="updated"></span></p>
+    <div class="row">
+      <a class="back" href="index.html" data-i18n="ui.back">← Back to Home</a>
+      <button class="chip" id="langToggle" aria-label="Switch language">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="langLabel">中文</span>
+      </button>
+    </div>
 
-    <p>GoJULI ("we", "us", or "our") provides a travel diary and shared‑expenses app. This Privacy Policy explains how we handle your information when you use our app and website.</p>
+    <h1 data-i18n="title">Privacy Policy</h1>
+    <p class="muted"><span data-i18n="updated">Last updated:</span> <span id="updated"></span></p>
 
-    <h2>Data categories & purposes (aligned with App Store labels)</h2>
+    <p data-i18n="intro">GoJULI ("we", "us", or "our") provides a travel diary and shared‑expenses app. This Privacy Policy explains how we handle your information when you use our app and website.</p>
+
+    <h2 data-i18n="section.labels">Data categories & purposes (aligned with App Store labels)</h2>
 
     <div class="grid">
       <div class="card">
-        <h3>Contact Info</h3>
+        <h3 data-i18n="cat.contact.title">Contact Info</h3>
         <ul class="tight">
-          <li><span class="k">Name</span> <span class="tag">App Functionality</span> <span class="tag">Linked to identity</span></li>
-          <li><span class="k">Email Address</span> <span class="tag">App Functionality</span> <span class="tag">Linked to identity</span></li>
-          <li><span class="k">Phone Number</span> <span class="tag">App Functionality</span> <span class="tag">Linked to identity</span></li>
-          <li><span class="k">Physical Address</span> <span class="tag">App Functionality</span> <span class="tag">Linked to identity</span></li>
+          <li><span class="k" data-i18n="cat.contact.name">Name</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
+          <li><span class="k" data-i18n="cat.contact.email">Email Address</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
+          <li><span class="k" data-i18n="cat.contact.phone">Phone Number</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
         </ul>
       </div>
 
       <div class="card">
-        <h3>Location</h3>
+        <h3 data-i18n="cat.location.title">Location</h3>
         <ul class="tight">
-          <li><span class="k">Precise Location</span> <span class="tag">Analytics</span> <span class="tag">App Functionality</span> <span class="tag">Product Personalization</span></li>
-          <li><span class="k">Coarse Location</span> <span class="tag">Analytics</span> <span class="tag">App Functionality</span> <span class="tag">Product Personalization</span></li>
+          <li><span class="k" data-i18n="cat.location.coarse">Coarse Location</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
         </ul>
       </div>
 
       <div class="card">
-        <h3>User Content</h3>
+        <h3 data-i18n="cat.content.title">User Content</h3>
         <ul class="tight">
-          <li><span class="k">Emails or Text Messages</span> <span class="tag">Product Personalization</span> <span class="tag">App Functionality</span></li>
-          <li><span class="k">Photos or Videos</span> <span class="tag">Product Personalization</span> <span class="tag">App Functionality</span></li>
-          <li><span class="k">Other User Content</span> <span class="tag">Product Personalization</span> <span class="tag">App Functionality</span></li>
+          <li><span class="k" data-i18n="cat.content.msg">Emails or Text Messages</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
+          <li><span class="k" data-i18n="cat.content.media">Photos or Videos</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
+          <li><span class="k" data-i18n="cat.content.other">Other User Content</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
         </ul>
       </div>
 
       <div class="card">
-        <h3>Identifiers</h3>
+        <h3 data-i18n="cat.id.title">Identifiers</h3>
         <ul class="tight">
-          <li><span class="k">User ID</span> <span class="tag">App Functionality</span> <span class="tag">Linked to identity</span></li>
+          <li><span class="k" data-i18n="cat.id.uid">User ID</span> <span class="tag" data-i18n="labels.func">App Functionality</span> <span class="tag" data-i18n="labels.linked">Linked to identity</span></li>
         </ul>
       </div>
 
       <div class="card">
-        <h3>Usage Data</h3>
+        <h3 data-i18n="cat.usage.title">Usage Data</h3>
         <ul class="tight">
-          <li><span class="k">Product Interaction</span> <span class="tag">Analytics</span> <span class="tag">Linked to identity</span> <span class="tag">Used for tracking purposes</span></li>
+          <li><span class="k" data-i18n="cat.usage.interact">Product Interaction</span> <span class="tag" data-i18n="labels.analytics">Analytics</span> </li>
         </ul>
       </div>
 
       <div class="card">
-        <h3>Diagnostics</h3>
+        <h3 data-i18n="cat.diag.title">Diagnostics</h3>
         <ul class="tight">
-          <li><span class="k">Crash Data</span> <span class="tag">Analytics</span></li>
-          <li><span class="k">Performance Data</span> <span class="tag">Analytics</span></li>
-          <li><span class="k">Other Diagnostic Data</span> <span class="tag">Analytics</span></li>
+          <li><span class="k" data-i18n="cat.diag.crash">Crash Data</span> <span class="tag" data-i18n="labels.analytics">Analytics</span></li>
+          <li><span class="k" data-i18n="cat.diag.perf">Performance Data</span> <span class="tag" data-i18n="labels.analytics">Analytics</span></li>
+          <li><span class="k" data-i18n="cat.diag.other">Other Diagnostic Data</span> <span class="tag" data-i18n="labels.analytics">Analytics</span></li>
         </ul>
       </div>
     </div>
 
-    <h2>Details</h2>
-    <p>Examples of how the above categories arise in GoJULI:</p>
+    <h2 data-i18n="section.details">Details</h2>
+    <p data-i18n="details.intro">Examples of how the above categories arise in GoJULI:</p>
     <ul>
-      <li><b>Account & contact info</b> to create your account, invite travel buddies, send trip updates, and provide support.</li>
-      <li><b>Location</b> (precise or coarse) may be used for analytics, showing nearby or time‑zone‑relevant features, and personalizing content. You can manage location permissions in your device settings.</li>
-      <li><b>User content</b> includes trip diaries, messages/invites you write, and optional receipt photos you upload.</li>
-      <li><b>Identifiers and usage</b> help us understand feature usage and improve reliability. Certain analytics events may be associated with your account and are marked as "used for tracking purposes" in the App Store label.</li>
-      <li><b>Diagnostics</b> (crash/performance) help us troubleshoot and improve stability.</li>
+      <li data-i18n="details.account"><b>Account & contact info</b> to create your account, invite travel buddies, send trip updates, and provide support.</li>
+      <li data-i18n="details.location"><b>Location</b> (coarse) may be used for showing your footprint. You can manage location permissions in your device settings.</li>
+      <li data-i18n="details.content"><b>User content</b> includes trip diaries, messages/invites you write, and optional receipt photos you upload.</li>
+      <li data-i18n="details.identifiers"><b>Identifiers and usage</b> help us understand feature usage and improve reliability.</li>
+      <li data-i18n="details.diagnostics"><b>Diagnostics</b> (crash/performance) help us troubleshoot and improve stability.</li>
     </ul>
 
-    <h2>Data practices</h2>
+    <h2 data-i18n="section.practices">Data practices</h2>
     <ul>
-      <li><b>Sharing:</b> We use trusted service providers (e.g., cloud hosting, analytics) under data‑processing agreements. We do <u>not</u> sell personal data.</li>
-      <li><b>Security:</b> Encryption in transit and access controls. No method is 100% secure, but we take reasonable measures.</li>
-      <li><b>Retention:</b> We keep data while your account is active. You can request deletion; we will delete or anonymize unless legally required to retain.</li>
-      <li><b>Children:</b> Not for children under 4 (or the minimum age in your country).</li>
-      <li><b>International transfers:</b> Data may be processed outside your country with appropriate safeguards.</li>
+      <li data-i18n="practices.sharing"><b>Sharing:</b> We use trusted service providers (e.g., cloud hosting, analytics) under data‑processing agreements. We do <u>not</u> sell personal data.</li>
+      <li data-i18n="practices.security"><b>Security:</b> Encryption in transit and access controls. No method is 100% secure, but we take reasonable measures.</li>
+      <li data-i18n="practices.retention"><b>Retention:</b> We keep data while your account is active. You can request deletion; we will delete or anonymize unless legally required to retain.</li>
+      <li data-i18n="practices.children"><b>Children:</b> Not for children under 4 (or the minimum age in your country).</li>
+      <li data-i18n="practices.transfer"><b>International transfers:</b> Data may be processed outside your country with appropriate safeguards.</li>
     </ul>
 
-    <h2>Your choices & rights</h2>
+    <h2 data-i18n="section.rights">Your choices & rights</h2>
     <ul>
-      <li>Access, correction, deletion, portability (where applicable).</li>
-      <li>Manage permissions (e.g., location, photos) in your device settings.</li>
-      <li>Opt‑out of optional communications via app or email controls.</li>
+      <li data-i18n="rights.set1">Access, correction, deletion, portability (where applicable).</li>
+      <li data-i18n="rights.set2">Manage permissions (e.g., location, photos) in your device settings.</li>
+      <li data-i18n="rights.set3">Opt‑out of optional communications via app or email controls.</li>
     </ul>
 
-    <h2>Contact us</h2>
-    <p>Email: <a href="spideycj020405@gmail.com">spideycj020405@gmail.com</a></p>
+    <h2 data-i18n="section.contact">Contact us</h2>
+    <p><span data-i18n="contact.email">Email:</span> <a href="mailto:spideycj020405@gmail.com">spideycj020405@gmail.com</a></p>
 
-    <h2>Changes to this policy</h2>
-    <p>We may update this policy. We’ll post the new version here and update the “Last updated” date.</p>
+    <h2 data-i18n="section.changes">Changes to this policy</h2>
+    <p data-i18n="changes.note">We may update this policy. We’ll post the new version here and update the “Last updated” date.</p>
   </div>
-  <script>document.getElementById('updated').textContent=new Date().toISOString().slice(0,10)</script>
+  <script>
+    // date
+    document.getElementById('updated').textContent=new Date().toISOString().slice(0,10);
+
+    const T = {
+      en:{
+        ui:{back:'← Back to Home'},
+        title:'Privacy Policy',
+        updated:'Last updated:',
+        intro:'GoJULI ("we", "us", or "our") provides a travel diary and shared‑expenses app. This Privacy Policy explains how we handle your information when you use our app and website.',
+        section:{labels:'Data categories & purposes',details:'Details',practices:'Data practices',rights:'Your choices & rights',contact:'Contact us',changes:'Changes to this policy'},
+        labels:{func:'App Functionality',linked:'Linked to identity',analytics:'Analytics',personalize:'Product Personalization',tracking:'Used for tracking purposes'},
+        cat:{
+          contact:{title:'Contact Info',name:'Name',email:'Email Address',phone:'Phone Number',addr:'Physical Address'},
+          location:{title:'Location',precise:'Precise Location',coarse:'Coarse Location'},
+          content:{title:'User Content',msg:'Emails or Text Messages',media:'Photos or Videos',other:'Other User Content'},
+          id:{title:'Identifiers',uid:'User ID'},
+          usage:{title:'Usage Data',interact:'Product Interaction'},
+          diag:{title:'Diagnostics',crash:'Crash Data',perf:'Performance Data',other:'Other Diagnostic Data'}
+        },
+        details:{
+          intro:'Examples of how the above categories arise in GoJULI:',
+          account:'<b>Account & contact info</b> to create your account, invite travel buddies, send trip updates, and provide support.',
+          location:'<b>Location</b> (coarse) may be used for showing your footprint. You can manage location permissions in your device settings.',
+          content:'<b>User content</b> includes trip diaries, messages/invites you write, and optional receipt photos you upload.',
+          identifiers:'<b>Usage</b> help us understand feature usage and improve reliability.',
+          diagnostics:'<b>Diagnostics</b> (crash/performance) help us troubleshoot and improve stability.'
+        },
+        practices:{
+          sharing:'<b>Sharing:</b> We use trusted service providers (e.g., cloud hosting, analytics) under data‑processing agreements. We do <u>not</u> sell personal data.',
+          security:'<b>Security:</b> Encryption in transit and access controls. No method is 100% secure, but we take reasonable measures.',
+          retention:'<b>Retention:</b> We keep data while your account is active. You can request deletion; we will delete or anonymize unless legally required to retain.',
+          children:'<b>Children:</b> Not for children under 4 (or the minimum age in your country).',
+          transfer:'<b>International transfers:</b> Data may be processed outside your country with appropriate safeguards.'
+        },
+        rights:{set1:'Access, correction, deletion, portability (where applicable).',set2:'Manage permissions (e.g., location, photos) in your device settings.',set3:'Opt‑out of optional communications via app or email controls.'},
+        contact:{email:'Email:'},
+        changes:{note:'We may update this policy. We’ll post the new version here and update the “Last updated” date.'},
+        langLabel:'中文'
+      },
+      zh:{
+        ui:{back:'← 返回首页'},
+        title:'隐私政策',
+        updated:'最近更新：',
+        intro:'GoJULI（以下简称“我们”）提供旅行日记与共享账本应用。本隐私政策说明您在使用我们的 App 与网站时，我们如何处理您的信息。',
+        section:{labels:'数据类别与使用目的',details:'细则说明',practices:'数据实践',rights:'你的选择与权利',contact:'联系我们',changes:'本政策的变更'},
+        labels:{func:'应用功能',linked:'关联至身份',analytics:'分析',personalize:'产品个性化',tracking:'用于追踪目的'},
+        cat:{
+          contact:{title:'联系方式',name:'姓名',email:'邮箱地址',phone:'手机号',addr:'物理地址'},
+          location:{title:'位置信息',precise:'精确位置',coarse:'粗略位置'},
+          content:{title:'用户内容',msg:'邮件或短信',media:'照片或视频',other:'其他用户内容'},
+          id:{title:'标识符',uid:'用户 ID'},
+          usage:{title:'使用数据',interact:'产品交互'},
+          diag:{title:'诊断信息',crash:'崩溃数据',perf:'性能数据',other:'其他诊断数据'}
+        },
+        details:{
+          intro:'上述类别在 GoJULI 中可能出现的情形：',
+          account:'<b>账户与联系方式</b> 用于创建账户、邀请旅伴、发送行程更新以及提供支持。',
+          location:'<b>位置信息</b>（粗略）可能用于显示你的足迹。你可在设备设置中管理定位权限。',
+          content:'<b>用户内容</b> 包括你撰写的旅行日记、消息/邀请，以及可选上传的票据照片。',
+          identifiers:'<b>使用数据</b> 帮助我们理解功能使用并提升稳定性。',
+          diagnostics:'<b>诊断信息</b>（崩溃/性能）帮助我们排障并改进稳定性。'
+        },
+        practices:{
+          sharing:'<b>共享：</b> 我们在数据处理协议下使用受信任的服务提供方（如云托管、分析）。我们<u>不会</u>出售个人数据。',
+          security:'<b>安全：</b> 传输加密与访问控制。任何方式都无法 100% 保证安全，但我们会采取合理措施。',
+          retention:'<b>保留：</b> 在你的账户处于活跃状态期间保存数据。你可以申请删除；除法律要求保留外，我们会删除或匿名化。',
+          children:'<b>未成年人：</b> 不面向 4 岁以下（或你所在国家的最低年龄）的儿童。',
+          transfer:'<b>跨境传输：</b> 数据可能在你所在国家/地区之外处理，并采取适当保障措施。'
+        },
+        rights:{set1:'在适用范围内，你可行使访问、更正、删除、可携带权。',set2:'可在设备设置中管理权限（如定位、相册）。',set3:'可通过 App 或邮件设置退订可选通信。'},
+        contact:{email:'邮箱：'},
+        changes:{note:'我们可能更新本政策。更新后将发布在本页，并同步“最近更新”日期。'},
+        langLabel:'EN'
+      }
+    };
+
+    const $ = (s,root=document)=>root.querySelector(s);
+    const $$ = (s,root=document)=>Array.from(root.querySelectorAll(s));
+
+    function applyI18n(lang){
+      const dict=T[lang]||T.en;
+      $$('[data-i18n]').forEach(el=>{
+        const key=el.getAttribute('data-i18n').split('.').reduce((acc,k)=>acc&&acc[k],dict);
+        if(typeof key==='string'){
+          if(/<\w+/.test(key)) el.innerHTML=key; else el.textContent=key;
+        }
+      });
+      document.title = lang==='zh' ? 'GoJULI — 隐私政策' : 'GoJULI — Privacy Policy';
+      const metaDesc=$('meta[name="description"]');
+      if(metaDesc){ metaDesc.setAttribute('content', lang==='zh' ? 'GoJULI 隐私政策——我们如何收集、使用、共享与保护你的数据。' : 'GoJULI Privacy Policy — how we collect, use, share, and protect your data.'); }
+      document.documentElement.lang = lang==='zh' ? 'zh' : 'en';
+      $('#langLabel').textContent=T[lang].langLabel;
+    }
+
+    function getInitialLang(){
+      const saved=localStorage.getItem('gojuli_lang_privacy');
+      if(saved) return saved; const sys=navigator.language||'en';
+      return /^zh/i.test(sys)?'zh':'en';
+    }
+
+    const initLang=getInitialLang();
+    applyI18n(initLang);
+
+    $('#langToggle').addEventListener('click',()=>{
+      const next=document.documentElement.lang==='zh'?'en':'zh';
+      localStorage.setItem('gojuli_lang_privacy',next);
+      applyI18n(next);
+    });
+  </script>
 </body>
 </html>

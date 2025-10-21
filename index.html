@@ -29,6 +29,23 @@
       --ring: rgba(206,147,191,.45);
       --ring-strong: rgba(160,110,150,.65);
       --shadow: 0 12px 30px -14px rgba(48,16,40,.25);
+
+      /* Store-specific colors */
+      --apple-dark: #111114;    /* near-black */
+      --apple-glare: #1f1f26;   /* elevated card */
+      --google-left: #0F9D58;   /* green */
+      --google-right: #4285F4;  /* blue */
+      --google-accent: #F4B400; /* yellow */
+      --google-red: #DB4437;    /* red */
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --ink:#f6f2f6; --ink-muted:#cbbfcd;
+        --bg:#1a141e; --bg2:#201827;
+        --surface:#241c2b; --border:rgba(255,255,255,.08);
+        --shadow: 0 10px 28px -16px rgba(0,0,0,.55);
+      }
     }
 
     *{box-sizing:border-box}
@@ -41,6 +58,8 @@
         radial-gradient(900px 380px at 100% 0%, rgba(206,147,191,0.18), transparent 70%),
         radial-gradient(700px 320px at 0% 100%, rgba(160,110,150,0.14), transparent 70%),
         linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     a{color:var(--accent);text-decoration:none;transition:opacity .2s ease, filter .2s ease}
@@ -61,9 +80,9 @@
     }
     .logo-badge img{width:100%;height:100%;object-fit:cover}
 
-    .nav-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .nav-cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
-    /* CHIPS: higher contrast, brand-tinted */
+    /* CHIPS */
     .chip{
       --chip-grad: linear-gradient(135deg, rgba(206,147,191,0.18), rgba(160,110,150,0.18));
       padding:8px 14px;border-radius:999px;
@@ -71,45 +90,90 @@
       border:1px solid var(--border);
       color:var(--accent);font-weight:700;font-size:14px;
       box-shadow:0 8px 22px -16px var(--ring);
+      -webkit-backdrop-filter:saturate(1.1) blur(2px);
       backdrop-filter:saturate(1.1) blur(2px);
       transition: box-shadow .2s ease, transform .12s ease;
     }
     .chip:hover{box-shadow:0 10px 26px -16px var(--ring-strong);transform:translateY(-1px)}
     .chip:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 
+    .lang-toggle{cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+    .lang-toggle .dot{width:8px;height:8px;border-radius:999px;background:var(--accent)}
+
     .hero{display:grid;gap:26px;grid-template-columns:1.2fr .8fr;align-items:center;padding:44px 0}
     @media (max-width:900px){.hero{grid-template-columns:1fr}}
 
     h1{font-size:46px;line-height:1.06;margin:0 0 12px;letter-spacing:.2px}
     .lead{color:var(--ink-muted);font-size:18px}
-    .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+    .cta{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap}
 
-    /* BUTTONS: solid brand gradient + improved contrast */
-    .btn{
-      padding:12px 16px;border-radius:14px;
-      background:linear-gradient(180deg, #ffffff 0%, #f7f2f7 100%);
-      color:var(--ink);
-      font-weight:900;letter-spacing:.2px;
-      display:inline-flex;align-items:center;gap:10px;
-      box-shadow:0 12px 28px -18px rgba(0,0,0,.25);
-      transition:transform .12s ease, box-shadow .12s ease, filter .18s ease;
+    /* ===== DISTINCT STORE BUTTONS ===== */
+    .store-btn{
+      --radius: 16px;
+      display:inline-flex;align-items:center;gap:12px;
+      padding:14px 18px;border-radius:var(--radius);
+      font-weight:800;letter-spacing:.2px;line-height:1;
+      border:1px solid transparent;
+      transform:translateZ(0);
+      transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
+      box-shadow:0 18px 34px -16px var(--ring);
+      position:relative; isolation:isolate;
     }
+    .store-btn:active{transform:translateY(0)}
+    .store-btn:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+
+    /* Apple style – high contrast black card with glass sheen */
+    .store-btn.apple{
+      color:#fff;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 40%),
+        linear-gradient(180deg, var(--apple-glare), var(--apple-dark));
+      border-color:rgba(255,255,255,.08);
+      text-shadow:0 1px 0 rgba(0,0,0,.25);
+    }
+    .store-btn.apple:hover{filter:saturate(1.08);box-shadow:0 24px 40px -18px rgba(0,0,0,.45)}
+
+    /* Google style – subtle diagonal brand gradient */
+    .store-btn.play{
+      color:#fff;
+      background:
+        linear-gradient(135deg, var(--google-left), var(--google-right));
+      border-color:rgba(255,255,255,.12);
+      text-shadow:0 1px 0 rgba(0,0,0,.25);
+    }
+    .store-btn.play:hover{filter:saturate(1.08);box-shadow:0 24px 40px -18px var(--ring-strong)}
+
+    /* Left icon tile */
+    /* 让图标在 tile 里正确缩放 */
+    .store-btn .tile img {
+      width: 20px;
+      height: 20px;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* 如果 Apple.svg 是黑色的：在深色按钮上反相成白色 */
+    .store-btn.apple .tile img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    /* Google Play PNG 本身是彩色的，不做滤镜 */
+    .store-btn.play .tile img { filter: none; }
+
+    /* Lockup text */
+    .store-copy{display:flex;flex-direction:column}
+    .store-eyebrow{font-size:11px;opacity:.9;font-weight:700}
+    .store-title{font-size:17px}
+
+    /* Legacy button kept for other uses */
+    .btn{ display:inline-flex;align-items:center;gap:10px; padding:12px 16px;border-radius:14px;
+      background:linear-gradient(180deg, #ffffff 0%, #f7f2f7 100%);
+      color:var(--ink); font-weight:900;letter-spacing:.2px; box-shadow:0 12px 28px -18px rgba(0,0,0,.25);
+      transition:transform .12s ease, box-shadow .12s ease, filter .18s ease;}
     .btn:hover{transform:translateY(-1px);box-shadow:0 16px 34px -18px rgba(0,0,0,.28);filter:saturate(1.02)}
     .btn:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 
-    .btn.primary{
-      border-color:transparent;color:#23131f;
-      background:
-        radial-gradient(60% 100% at 100% 0%, rgba(255,255,255,.9) 0%, transparent 70%),
-        linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
-      color:#fff;
-      text-shadow:0 1px 0 rgba(0,0,0,0.15);
-      box-shadow:0 18px 34px -16px var(--ring);
-    }
-    .btn.primary:hover{box-shadow:0 24px 40px -18px var(--ring-strong)}
-    .btn .icon{width:18px;height:18px;object-fit:cover;border-radius:4px}
-
-    /* CARDS: softer, tinted surfaces with clearer borders */
+    /* CARDS */
     .card{
       background:linear-gradient(180deg, var(--surface) 0%, rgba(255,255,255,0.92) 100%), var(--surface);
       border:1px solid var(--border);
@@ -145,7 +209,6 @@
     .foot{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:40px;color:var(--ink-muted);font-size:14px}
     .badges{display:flex;gap:10px;flex-wrap:wrap}
 
-    /* BADGES: brand micro-pills */
     .badge{
       --badge-grad: linear-gradient(135deg, rgba(206,147,191,0.22), rgba(160,110,150,0.22));
       padding:6px 12px;border-radius:999px;
@@ -154,6 +217,10 @@
       color:var(--accent);font-weight:700
     }
     .badge:hover{box-shadow:0 10px 24px -16px var(--ring)}
+
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important}
+    }
   </style>
 </head>
 <body>
@@ -166,35 +233,51 @@
         GoJULI
       </div>
       <div class="nav-cta">
-        <a class="chip" href="privacy.html">Privacy</a>
-        <a class="chip" href="#contact">Contact</a>
+        <a class="chip" href="privacy.html" data-i18n="nav.privacy">Privacy</a>
+        <a class="chip" href="#contact" data-i18n="nav.contact">Contact</a>
+        <button class="chip lang-toggle" id="langToggle" aria-label="Switch language">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="langLabel">中文</span>
+        </button>
       </div>
     </nav>
 
     <section class="hero">
       <div>
-        <h1>Travel diary</h1>
-        <p class="lead">Plan trips, split costs fairly, and keep a beautiful diary with your crew. Build your travel community and remember every moment.</p>
+        <h1 data-i18n="hero.title">Travel diary</h1>
+        <p class="lead" data-i18n="hero.lead">Plan trips, split costs fairly, and keep a beautiful diary with your crew. Build your travel community and remember every moment.</p>
 
-        <div class="cta">
-          <!-- 替换为真实商店链接 -->
-          <a class="btn primary" href="#" aria-disabled="true">
-            Download on App Store
+        <div class="cta" role="group" aria-label="Download">
+          <a class="store-btn apple" href="#" aria-label="Download on the App Store" aria-disabled="true">
+            <span class="tile" aria-hidden="true">
+              <img src="assets/Apple.svg" alt="" />
+            </span>
+            <span class="store-copy">
+              <span class="store-eyebrow" data-i18n="buttons.apple.eyebrow">Download on the</span>
+              <span class="store-title" data-i18n="buttons.apple.title">App Store</span>
+            </span>
           </a>
-          <a class="btn primary" href="#" aria-disabled="true">
-            Get it on Google Play
+
+
+          <a class="store-btn play" href="#" aria-label="Get it on Google Play" aria-disabled="true">
+            <span class="tile" aria-hidden="true">
+              <img src="assets/Google-Play.png" alt="" />
+            </span>
+            <span class="store-copy">
+              <span class="store-eyebrow" data-i18n="buttons.play.eyebrow">Get it on</span>
+              <span class="store-title" data-i18n="buttons.play.title">Google Play</span>
+            </span>
           </a>
         </div>
 
         <div class="badges" style="margin-top:14px">
-          <span class="badge">Travel buddies</span>
-          <span class="badge">Shared expenses</span>
-          <span class="badge">Diary records</span>
-          <span class="badge">Multi-language</span>
+          <span class="badge" data-i18n="badges.buddies">Travel buddies</span>
+          <span class="badge" data-i18n="badges.expenses">Shared expenses</span>
+          <span class="badge" data-i18n="badges.diary">Diary records</span>
+          <span class="badge" data-i18n="badges.multi">Multi-language</span>
         </div>
       </div>
 
-      <!-- 右侧展示图：欢迎页或产品截图 -->
       <div class="card shot">
         <img src="assets/juli_welcome.png" alt="GoJULI preview" />
       </div>
@@ -206,43 +289,126 @@
           <div class="feat-icon">
             <img src="assets/juli_and_99.png" alt="Community" />
           </div>
-          <h3>Travel buddies</h3>
-          <p class="muted">Invite friends to your diary, see who’s on the trip, and coordinate plans together. Keep everyone in sync.</p>
+          <h3 data-i18n="features.buddies.title">Travel buddies</h3>
+          <p class="muted" data-i18n="features.buddies.body">Invite friends to your diary, see who’s on the trip, and coordinate plans together. Keep everyone in sync.</p>
         </div>
 
         <div class="card feat">
           <div class="feat-icon">
             <img src="assets/juli_happy.png" alt="Diary" />
           </div>
-          <h3>Diary records</h3>
-          <p class="muted">Capture moments, add notes, and link them to your trip schedules. Your stories stay organized and easy to revisit.</p>
+          <h3 data-i18n="features.diary.title">Diary records</h3>
+          <p class="muted" data-i18n="features.diary.body">Capture moments, add notes, and link them to your trip schedules. Your stories stay organized and easy to revisit.</p>
         </div>
 
         <div class="card feat">
           <div class="feat-icon">
             <img src="assets/juli_say_no.png" alt="Expenses & AA split" />
           </div>
-          <h3>Expenses</h3>
-          <p class="muted">Record expense items, pick participants, and GoJULI automatically calculates equal-share amounts with a transparent breakdown.</p>
+          <h3 data-i18n="features.expenses.title">Expenses</h3>
+          <p class="muted" data-i18n="features.expenses.body">Record expense items, pick participants, and GoJULI automatically calculates equal-share amounts with a transparent breakdown.</p>
         </div>
       </div>
     </section>
 
     <section id="contact" style="margin-top:40px">
       <div class="card">
-        <h3 style="margin:0 0 8px">Contact</h3>
-        <p class="muted">Questions or feedback? Email us at
-          <a href="mailto:spideycj020405@gmail.com">spideycj020405@gmail.com</a></p>
+        <h3 style="margin:0 0 8px" data-i18n="contact.title">Contact</h3>
+        <p class="muted">
+          <span data-i18n="contact.body">Questions or feedback? Email us at</span>
+          <a href="mailto:spideycj020405@gmail.com">spideycj020405@gmail.com</a>
+        </p>
       </div>
     </section>
 
     <footer class="foot">
       <div>© <span id="y"></span> GoJULI</div>
       <div class="badges">
-        <a class="badge" href="privacy.html">Privacy Policy</a>
+        <a class="badge" href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
       </div>
     </footer>
   </div>
-  <script>document.getElementById("y").textContent=new Date().getFullYear()</script>
+  <script>
+    document.getElementById("y").textContent=new Date().getFullYear();
+
+    const TRANSLATIONS = {
+      en: {
+        nav: { privacy: "Privacy", contact: "Contact" },
+        hero: { title: "Travel diary", lead: "Plan trips, split costs fairly, and keep a beautiful diary with your crew. Build your travel community and remember every moment." },
+        buttons: {
+          apple: { eyebrow: "Download on the", title: "App Store", aria: "Download on the App Store" },
+          play:  { eyebrow: "Get it on",       title: "Google Play", aria: "Get it on Google Play" }
+        },
+        badges: { buddies: "Travel buddies", expenses: "Shared expenses", diary: "Diary records", multi: "Multi-language" },
+        features: {
+          buddies: { title: "Travel buddies", body: "Invite friends to your diary, see who’s on the trip, and coordinate plans together. Keep everyone in sync." },
+          diary:   { title: "Diary records",  body: "Capture moments, add notes, and link them to your trip schedules. Your stories stay organized and easy to revisit." },
+          expenses:{ title: "Expenses",        body: "Record expense items, pick participants, and GoJULI automatically calculates equal-share amounts with a transparent breakdown." }
+        },
+        contact: { title: "Contact", body: "Questions or feedback? Email us at" },
+        footer: { privacy: "Privacy Policy" },
+        langLabel: "中文"
+      },
+      zh: {
+        nav: { privacy: "隐私政策", contact: "联系" },
+        hero: { title: "旅行日记", lead: "一起计划行程、AA 均摊费用，用优雅的日记记录每个瞬间，和旅伴们建立你的旅行社区。" },
+        buttons: {
+          apple: { eyebrow: "在", title: "App Store 下载", aria: "在 App Store 下载" },
+          play:  { eyebrow: "前往", title: "Google Play 获取", aria: "前往 Google Play 获取" }
+        },
+        badges: { buddies: "旅伴社区", expenses: "共享账本", diary: "日记记录", multi: "多语言" },
+        features: {
+          buddies: { title: "旅伴社区", body: "邀请好友加入日记，查看同行成员，一起协同安排行程，让每个人都保持同步。" },
+          diary:   { title: "日记记录", body: "捕捉每个精彩瞬间、添加备注，并与行程日历关联，故事清晰易于回看。" },
+          expenses:{ title: "共享账本", body: "记录消费、选择参与者，GoJULI 自动按人头均摊，并提供透明明细。" }
+        },
+        contact: { title: "联系", body: "有问题或建议？给我们发邮件：" },
+        footer: { privacy: "隐私政策" },
+        langLabel: "EN"
+      }
+    };
+
+    const $ = (sel,root=document)=>root.querySelector(sel);
+    const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
+
+    function applyTranslations(lang){
+      const dict = TRANSLATIONS[lang] || TRANSLATIONS.en;
+      // Text nodes
+      $$('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n').split('.').reduce((acc,cur)=>acc&&acc[cur], dict);
+        if(typeof key === 'string'){ el.textContent = key; }
+      });
+      // Title/meta
+      document.title = lang==='zh' ? 'GoJULI — 旅行日记 & 旅伴' : 'GoJULI — Travel Diary & Travel Buddies';
+      const metaDesc = $('meta[name="description"]');
+      if(metaDesc){ metaDesc.setAttribute('content', lang==='zh' ? 'GoJULI：旅行日记、共享账本与旅伴社区。规划行程、记录支付、与旅伴一起玩。' : 'GoJULI is a travel diary with shared expenses and travel buddies. Plan trips, track payments, and build your travel community.'); }
+      const ogDesc = $('meta[property="og:description"]');
+      if(ogDesc){ ogDesc.setAttribute('content', lang==='zh' ? '规划行程、AA 均摊、与旅伴一起写下美好旅行日记。' : 'Plan trips, split costs, and keep a beautiful diary with your travel buddies.'); }
+      // aria-labels for store buttons
+      const apple = $('.store-btn.apple');
+      const play  = $('.store-btn.play');
+      if(apple){ apple.setAttribute('aria-label', dict.buttons.apple.aria); }
+      if(play){  play.setAttribute('aria-label',  dict.buttons.play.aria ); }
+      // html lang & toggle label
+      document.documentElement.lang = lang==='zh' ? 'zh' : 'en';
+      $('#langLabel').textContent = dict.langLabel;
+    }
+
+    function getInitialLang(){
+      const saved = localStorage.getItem('gojuli_lang');
+      if(saved) return saved;
+      const sys = navigator.language || navigator.userLanguage || 'en';
+      return /^zh/i.test(sys) ? 'zh' : 'en';
+    }
+
+    const current = getInitialLang();
+    applyTranslations(current);
+
+    $('#langToggle').addEventListener('click', ()=>{
+      const next = document.documentElement.lang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('gojuli_lang', next);
+      applyTranslations(next);
+    });
+  </script>
 </body>
 </html>
