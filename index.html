@@ -4,251 +4,986 @@
   <meta charset="utf-8" />
   <title>GoJULI — Travel Diary & Travel Buddies</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="GoJULI is a travel diary with shared expenses and travel buddies. Plan trips, track payments, and build your travel community." />
+  <meta
+    name="description"
+    content="GoJULI is a travel diary with shared expenses and travel buddies. Plan trips, track payments, and build your travel community."
+  />
   <link rel="icon" href="assets/icon.png" />
   <meta property="og:title" content="GoJULI — Travel Diary & Travel Buddies" />
-  <meta property="og:description" content="Plan trips, split costs, and keep a beautiful diary with your travel buddies." />
+  <meta
+    property="og:description"
+    content="Plan trips, split costs, and keep a beautiful diary with your travel buddies."
+  />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/jacaranda_proposal.png" />
   <style>
-    :root{
-      /* Brand palette tuned for higher contrast */
-      --brand: #CE93BF;           /* base */
-      --brand-strong: #B57AA7;    /* darker */
-      --accent: #A06E96;          /* deepest */
+    @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Space+Grotesk:wght@400;500;700&display=swap");
 
-      --ink: #1e1523;             /* main text */
-      --ink-muted: #6d6573;       /* muted text */
-
-      --bg:#f7f2f7;               /* tinted background */
-      --bg2:#f0e7f1;              /* deeper tint */
-
-      --surface:#fcf9fd;          /* card surface */
-      --surface-tint: rgba(206,147,191,0.12);
-      --border: rgba(95, 58, 86, 0.18);
-      --ring: rgba(206,147,191,.45);
-      --ring-strong: rgba(160,110,150,.65);
-      --shadow: 0 12px 30px -14px rgba(48,16,40,.25);
-
-      /* Store-specific colors */
-      --apple-dark: #111114;    /* near-black */
-      --apple-glare: #1f1f26;   /* elevated card */
-      --google-left: #0F9D58;   /* green */
-      --google-right: #4285F4;  /* blue */
-      --google-accent: #F4B400; /* yellow */
-      --google-red: #DB4437;    /* red */
+    :root {
+      --brand: #ce93bf;
+      --brand-strong: #b57aa7;
+      --accent: #a06e96;
+      --accent-deep: #7e506f;
+      --ink: #1b1320;
+      --ink-soft: #645c6d;
+      --bg: #fcf7fb;
+      --bg-deep: #f0e5f1;
+      --surface: rgba(255, 252, 255, 0.82);
+      --surface-strong: rgba(255, 250, 255, 0.94);
+      --surface-dark: #2d2232;
+      --line: rgba(108, 67, 101, 0.16);
+      --line-strong: rgba(108, 67, 101, 0.28);
+      --shadow: 0 28px 70px -34px rgba(67, 27, 59, 0.38);
+      --shadow-soft: 0 20px 40px -28px rgba(67, 27, 59, 0.3);
+      --apple-dark: #111114;
+      --apple-glare: #24242a;
+      --google-left: #0f9d58;
+      --google-right: #4285f4;
+      --maxw: 1180px;
     }
 
-    @media (prefers-color-scheme: dark){
-      :root{
-        --ink:#f6f2f6; --ink-muted:#cbbfcd;
-        --bg:#1a141e; --bg2:#201827;
-        --surface:#241c2b; --border:rgba(255,255,255,.08);
-        --shadow: 0 10px 28px -16px rgba(0,0,0,.55);
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #f7f1f7;
+        --ink-soft: #d1c3d4;
+        --bg: #140f17;
+        --bg-deep: #201824;
+        --surface: rgba(41, 30, 47, 0.82);
+        --surface-strong: rgba(47, 36, 54, 0.92);
+        --surface-dark: #f7eff7;
+        --line: rgba(255, 255, 255, 0.08);
+        --line-strong: rgba(255, 255, 255, 0.14);
+        --shadow: 0 28px 70px -34px rgba(0, 0, 0, 0.65);
+        --shadow-soft: 0 20px 40px -28px rgba(0, 0, 0, 0.5);
       }
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--ink);
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--ink);
       background:
-        radial-gradient(900px 380px at 100% 0%, rgba(206,147,191,0.18), transparent 70%),
-        radial-gradient(700px 320px at 0% 100%, rgba(160,110,150,0.14), transparent 70%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+        radial-gradient(circle at top right, rgba(206, 147, 191, 0.34), transparent 30%),
+        radial-gradient(circle at 0% 18%, rgba(160, 110, 150, 0.2), transparent 26%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
     }
 
-    a{color:var(--accent);text-decoration:none;transition:opacity .2s ease, filter .2s ease}
-    a:hover{opacity:.92;filter:saturate(1.05)}
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 999px;
+      filter: blur(40px);
+      opacity: 0.42;
+    }
 
-    .container{max-width:1120px;margin:0 auto;padding:24px}
-    .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    body::before {
+      top: 96px;
+      left: -120px;
+      width: 320px;
+      height: 320px;
+      background: rgba(206, 147, 191, 0.22);
+    }
 
-    .logo{display:flex;align-items:center;gap:12px;font-weight:900;font-size:18px;letter-spacing:.2px;color:var(--accent)}
-    .logo-badge{
-      width:36px;height:36px;border-radius:12px;overflow:hidden;
+    body::after {
+      right: -140px;
+      bottom: 120px;
+      width: 360px;
+      height: 360px;
+      background: rgba(160, 110, 150, 0.18);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 24px 24px 44px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 8px 0 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--accent-deep);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      padding: 5px;
+      border-radius: 14px;
       background:
-        radial-gradient(55% 55% at 30% 30%, #fff6, transparent 60%),
-        linear-gradient(145deg, var(--brand) 0%, var(--accent) 100%);
-      display:grid;place-items:center;
-      border:1px solid rgba(0,0,0,0.07);
-      box-shadow:0 16px 30px -16px var(--ring);
+        radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.75), transparent 48%),
+        linear-gradient(145deg, rgba(206, 147, 191, 0.92), rgba(126, 80, 111, 0.96));
+      box-shadow: 0 18px 32px -18px rgba(126, 80, 111, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
-    .logo-badge img{width:100%;height:100%;object-fit:cover}
 
-    .nav-cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-
-    /* CHIPS */
-    .chip{
-      --chip-grad: linear-gradient(135deg, rgba(206,147,191,0.18), rgba(160,110,150,0.18));
-      padding:8px 14px;border-radius:999px;
-      background:var(--chip-grad);
-      border:1px solid var(--border);
-      color:var(--accent);font-weight:700;font-size:14px;
-      box-shadow:0 8px 22px -16px var(--ring);
-      -webkit-backdrop-filter:saturate(1.1) blur(2px);
-      backdrop-filter:saturate(1.1) blur(2px);
-      transition: box-shadow .2s ease, transform .12s ease;
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
-    .chip:hover{box-shadow:0 10px 26px -16px var(--ring-strong);transform:translateY(-1px)}
-    .chip:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 
-    .lang-toggle{cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-    .lang-toggle .dot{width:8px;height:8px;border-radius:999px;background:var(--accent)}
-
-    .hero{display:grid;gap:26px;grid-template-columns:1.2fr .8fr;align-items:center;padding:44px 0}
-    @media (max-width:900px){.hero{grid-template-columns:1fr}}
-
-    h1{font-size:46px;line-height:1.06;margin:0 0 12px;letter-spacing:.2px}
-    .lead{color:var(--ink-muted);font-size:18px}
-    .cta{display:flex;gap:14px;margin-top:22px;flex-wrap:wrap}
-
-    /* ===== DISTINCT STORE BUTTONS ===== */
-    .store-btn{
-      --radius: 16px;
-      display:inline-flex;align-items:center;gap:12px;
-      padding:14px 18px;border-radius:var(--radius);
-      font-weight:800;letter-spacing:.2px;line-height:1;
-      border:1px solid transparent;
-      transform:translateZ(0);
-      transition: transform .12s ease, box-shadow .18s ease, filter .18s ease;
-      box-shadow:0 18px 34px -16px var(--ring);
-      position:relative; isolation:isolate;
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(14px);
+      color: var(--accent-deep);
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      box-shadow: var(--shadow-soft);
     }
-    .store-btn:active{transform:translateY(0)}
-    .store-btn:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 
-    /* Apple style – high contrast black card with glass sheen */
-    .store-btn.apple{
-      color:#fff;
+    .chip:hover,
+    .chip:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+      border-color: var(--line-strong);
+      outline: none;
+    }
+
+    .lang-toggle {
+      cursor: pointer;
+    }
+
+    .lang-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--brand), var(--accent));
+      box-shadow: 0 0 0 5px rgba(206, 147, 191, 0.14);
+    }
+
+    .hero-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+      gap: 34px;
+      align-items: center;
+      margin-top: 10px;
+      padding: 18px 0 12px;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--accent-deep);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    h1 {
+      max-width: 11ch;
+      font-size: clamp(3.4rem, 7vw, 6.2rem);
+      line-height: 0.94;
+    }
+
+    .lead {
+      max-width: 37rem;
+      margin: 18px 0 0;
+      color: var(--ink-soft);
+      font-size: clamp(1rem, 1.9vw, 1.2rem);
+      line-height: 1.72;
+    }
+
+    .cta {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 62px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      color: #fff;
+      font-weight: 700;
+      box-shadow: 0 22px 40px -24px rgba(67, 27, 59, 0.55);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+    }
+
+    .store-btn:hover,
+    .store-btn:focus-visible {
+      transform: translateY(-2px);
+      filter: saturate(1.05);
+      outline: none;
+    }
+
+    .store-btn.apple {
       background:
-        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,0) 40%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 38%),
         linear-gradient(180deg, var(--apple-glare), var(--apple-dark));
-      border-color:rgba(255,255,255,.08);
-      text-shadow:0 1px 0 rgba(0,0,0,.25);
+      border-color: rgba(255, 255, 255, 0.1);
     }
-    .store-btn.apple:hover{filter:saturate(1.08);box-shadow:0 24px 40px -18px rgba(0,0,0,.45)}
 
-    /* Google style – subtle diagonal brand gradient */
-    .store-btn.play{
-      color:#fff;
-      background:
-        linear-gradient(135deg, var(--google-left), var(--google-right));
-      border-color:rgba(255,255,255,.12);
-      text-shadow:0 1px 0 rgba(0,0,0,.25);
+    .store-btn.play {
+      background: linear-gradient(135deg, var(--google-left), var(--google-right));
+      border-color: rgba(255, 255, 255, 0.12);
     }
-    .store-btn.play:hover{filter:saturate(1.08);box-shadow:0 24px 40px -18px var(--ring-strong)}
 
-    /* Left icon tile */
-    /* 让图标在 tile 里正确缩放 */
+    .store-btn .tile {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .store-btn .tile img {
       width: 20px;
       height: 20px;
-      display: block;
       object-fit: contain;
     }
 
-    /* 如果 Apple.svg 是黑色的：在深色按钮上反相成白色 */
     .store-btn.apple .tile img {
       filter: invert(1) brightness(1.2);
     }
 
-    /* Google Play PNG 本身是彩色的，不做滤镜 */
-    .store-btn.play .tile img { filter: none; }
-
-    /* Lockup text */
-    .store-copy{display:flex;flex-direction:column}
-    .store-eyebrow{font-size:11px;opacity:.9;font-weight:700}
-    .store-title{font-size:17px}
-
-    /* Legacy button kept for other uses */
-    .btn{ display:inline-flex;align-items:center;gap:10px; padding:12px 16px;border-radius:14px;
-      background:linear-gradient(180deg, #ffffff 0%, #f7f2f7 100%);
-      color:var(--ink); font-weight:900;letter-spacing:.2px; box-shadow:0 12px 28px -18px rgba(0,0,0,.25);
-      transition:transform .12s ease, box-shadow .12s ease, filter .18s ease;}
-    .btn:hover{transform:translateY(-1px);box-shadow:0 16px 34px -18px rgba(0,0,0,.28);filter:saturate(1.02)}
-    .btn:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
-
-    /* CARDS */
-    .card{
-      background:linear-gradient(180deg, var(--surface) 0%, rgba(255,255,255,0.92) 100%), var(--surface);
-      border:1px solid var(--border);
-      border-radius:18px;padding:18px;
-      box-shadow: var(--shadow);
+    .store-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .features{display:grid;gap:16px;grid-template-columns:repeat(3,1fr);margin-top:32px}
-    @media (max-width:900px){.features{grid-template-columns:1fr}}
-    .feat h3{margin:8px 0 6px;font-size:18px;color:var(--accent)}
-    .muted{color:var(--ink-muted)}
+    .store-eyebrow {
+      font-size: 11px;
+      opacity: 0.9;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
 
-    .feat-icon{
-      width:44px;height:44px;border-radius:12px;overflow:hidden;
+    .store-title {
+      font-size: 17px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.58);
+      color: var(--accent-deep);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--brand), var(--accent));
+    }
+
+    .hero-stage {
+      position: relative;
+      min-height: 640px;
+      padding: 0;
+      background: none;
+      border: 0;
+      box-shadow: none;
+      overflow: visible;
+      isolation: isolate;
+      display: grid;
+      place-items: center;
+    }
+
+    .hero-stage::before,
+    .hero-stage::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      border-radius: 999px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-stage::before {
+      width: 320px;
+      height: 320px;
+      top: 18%;
+      left: 10%;
+      background: rgba(206, 147, 191, 0.12);
+      filter: blur(40px);
+    }
+
+    .hero-stage::after {
+      width: 260px;
+      height: 260px;
+      right: 6%;
+      bottom: 10%;
+      background: rgba(160, 110, 150, 0.1);
+      filter: blur(34px);
+    }
+
+    .shot-frame {
+      position: relative;
+      width: min(100%, 440px);
+      overflow: visible;
+      border: 0;
+      box-shadow: none;
+      background: none;
+      z-index: 1;
+      animation: hero-float 6.4s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    .shot-frame img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    .section.screen-section {
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .screen-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 96px 0 32px;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .hero-screen {
+      min-height: calc(100vh - 18px);
+      padding-top: 40px;
+    }
+
+    .screen-layout {
+      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.9fr);
+      gap: 48px;
+      align-items: center;
+    }
+
+    .screen-copy {
+      display: grid;
+      gap: 18px;
+      align-content: center;
+    }
+
+    .screen-copy h2 {
+      max-width: 11ch;
+      font-size: clamp(2.2rem, 4.6vw, 5rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+    }
+
+    .screen-copy p {
+      max-width: 34rem;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 1.05rem;
+      line-height: 1.85;
+    }
+
+    .screen-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent-deep);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .screen-kicker::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.42;
+    }
+
+    .screen-visual {
+      position: relative;
+      min-height: min(68vh, 720px);
+      display: grid;
+      place-items: center;
+      overflow: visible;
+      border-radius: 0;
+      background: none;
+    }
+
+    .screen-visual::before {
+      content: none;
+    }
+
+    .screen-visual img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: none;
+    }
+
+    .screen-visual-crew img {
+      width: min(100%, 320px);
+    }
+
+    .screen-visual-diary img {
+      width: min(100%, 560px);
+    }
+
+    .screen-visual-expense img {
+      width: min(100%, 280px);
+    }
+
+    .screen-pill {
+      position: absolute;
+      top: 34px;
+      left: 34px;
+      z-index: 1;
+      padding: 0;
+      border-radius: 0;
+      background: none;
+      color: var(--accent-deep);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: none;
+    }
+
+    .expense-chip {
+      position: absolute;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+      border-radius: 999px;
+      background: none;
+      color: var(--accent-deep);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    .expense-chip::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--brand), var(--accent));
+    }
+
+    .expense-chip-a {
+      top: 18%;
+      left: 8%;
+    }
+
+    .expense-chip-b {
+      top: 16%;
+      right: 10%;
+    }
+
+    .expense-chip-c {
+      bottom: 18%;
+      left: 16%;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      max-width: 28rem;
+      margin: 10px 0 0;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+
+    .step-card p,
+    .contact-copy p {
+      margin: 12px 0 0;
+      color: var(--ink-soft);
+      line-height: 1.72;
+    }
+
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 26px;
+    }
+
+    .step-card {
+      position: relative;
+      padding: 26px 24px 24px;
+      border-radius: 28px;
       background:
-        radial-gradient(50% 60% at 30% 30%, rgba(255,255,255,.6), transparent 60%),
-        linear-gradient(140deg, var(--brand) 0%, var(--accent) 100%);
-      display:grid;place-items:center;border:1px solid rgba(0,0,0,.06);
-      box-shadow:0 14px 28px -18px var(--ring);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.46)),
+        linear-gradient(180deg, rgba(206, 147, 191, 0.12), rgba(160, 110, 150, 0.04));
+      border: 1px solid rgba(126, 80, 111, 0.12);
+      box-shadow: 0 24px 46px -34px rgba(67, 27, 59, 0.34);
+      overflow: hidden;
+      transition:
+        transform 220ms ease,
+        box-shadow 220ms ease,
+        border-color 220ms ease;
     }
-    .feat-icon img{width:100%;height:100%;object-fit:cover;border-radius:10px}
 
-    .shot{
-      aspect-ratio:16/10;border-radius:16px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.96));
-      border:1px solid var(--border);
-      position:relative;overflow:hidden;display:grid;place-items:center;
-      box-shadow: var(--shadow);
+    .step-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand), var(--accent-deep));
+      opacity: 0.9;
     }
-    .shot img{width:100%;height:100%;object-fit:cover}
-    .shot::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg, rgba(255,255,255,.0) 60%, rgba(0,0,0,.06))}
 
-    .foot{display:flex;gap:12px;justify-content:space-between;align-items:center;margin-top:40px;color:var(--ink-muted);font-size:14px}
-    .badges{display:flex;gap:10px;flex-wrap:wrap}
-
-    .badge{
-      --badge-grad: linear-gradient(135deg, rgba(206,147,191,0.22), rgba(160,110,150,0.22));
-      padding:6px 12px;border-radius:999px;
-      background:var(--badge-grad);
-      border:1px solid var(--border);
-      color:var(--accent);font-weight:700
+    .step-card::after {
+      content: "";
+      position: absolute;
+      right: -18px;
+      bottom: -28px;
+      width: 120px;
+      height: 120px;
+      border-radius: 999px;
+      background: rgba(206, 147, 191, 0.1);
+      filter: blur(10px);
+      pointer-events: none;
     }
-    .badge:hover{box-shadow:0 10px 24px -16px var(--ring)}
 
-    @media (prefers-reduced-motion: reduce){
-      *, *::before, *::after{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important}
+    .step-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(126, 80, 111, 0.2);
+      box-shadow: 0 34px 58px -34px rgba(67, 27, 59, 0.42);
+    }
+
+    .step-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(206, 147, 191, 0.26), rgba(160, 110, 150, 0.22));
+      color: var(--accent-deep);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 18px;
+    }
+
+    .step-card h3 {
+      max-width: 14ch;
+      font-size: 1.55rem;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 180px;
+      gap: 18px;
+      align-items: center;
+      padding: 0;
+      margin-top: 18px;
+    }
+
+    .contact-panel img {
+      justify-self: end;
+      width: 100%;
+      max-width: 176px;
+    }
+
+    #contact .section-head {
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    #contact .section-head p {
+      max-width: 40rem;
+      margin-inline: auto;
+    }
+
+    #contact .section-head h2 {
+      font-size: clamp(2.4rem, 4.6vw, 4.8rem);
+      line-height: 0.96;
+      letter-spacing: -0.04em;
+    }
+
+    .contact-panel {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      gap: 24px;
+      max-width: 56rem;
+      margin: 18px auto 0;
+    }
+
+    .contact-copy {
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+    }
+
+    .contact-copy p {
+      max-width: 42rem;
+      margin: 0;
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      line-height: 1.78;
+    }
+
+    .email-link {
+      color: var(--accent-deep);
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-color: rgba(160, 110, 150, 0.32);
+      text-underline-offset: 0.18em;
+      font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 24px;
+      padding-top: 18px;
+      color: var(--ink-soft);
+      font-size: 14px;
+    }
+
+    #contact .footer {
+      margin-top: auto;
+    }
+
+    .footer .badge {
+      font-size: 12px;
+    }
+
+    .hero-copy,
+    .hero-stage,
+    .screen-layout,
+    .step-card,
+    .contact-panel {
+      animation: rise-in 0.8s ease both;
+    }
+
+    .hero-stage {
+      animation-delay: 0.08s;
+    }
+
+    .screen-layout:nth-child(2),
+    .step-card:nth-child(2) {
+      animation-delay: 0.12s;
+    }
+
+    .screen-layout:nth-child(3),
+    .step-card:nth-child(3) {
+      animation-delay: 0.18s;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes rise-in {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes hero-float {
+      0%,
+      100% {
+        transform: translateY(0px) scale(1);
+      }
+      50% {
+        transform: translateY(-14px) scale(1.012);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-shell,
+      .screen-layout,
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stage {
+        min-height: 580px;
+      }
+
+      .journey-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step-card {
+        padding: 24px 22px 22px;
+      }
+
+      .screen-section {
+        min-height: auto;
+        padding: 90px 0 24px;
+      }
+
+      .screen-layout {
+        gap: 26px;
+      }
+
+      .screen-copy h2 {
+        max-width: 12ch;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+      }
+
+      .screen-visual {
+        min-height: 52vh;
+      }
+
+      .contact-panel img {
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding-inline: 18px;
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav-actions {
+        justify-content: flex-start;
+      }
+
+      h1 {
+        max-width: none;
+        font-size: clamp(2.8rem, 16vw, 4.4rem);
+      }
+
+      .hero-stage {
+        min-height: 540px;
+        padding: 0;
+      }
+
+      .shot-frame {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: min(100%, 360px);
+        margin-top: 0;
+      }
+
+      .note-b {
+        position: relative;
+        left: auto;
+        bottom: auto;
+        margin-top: 14px;
+      }
+
+      .screen-section {
+        padding-top: 84px;
+      }
+
+      .screen-copy h2 {
+        max-width: none;
+        font-size: clamp(2rem, 11vw, 3.4rem);
+      }
+
+      .screen-copy p {
+        font-size: 1rem;
+        line-height: 1.76;
+      }
+
+      .screen-visual {
+        min-height: 44vh;
+        border-radius: 28px;
+      }
+
+      .step-card h3 {
+        max-width: none;
+        font-size: 1.36rem;
+      }
+
+      #contact .section-head h2 {
+        font-size: clamp(2rem, 10vw, 3.2rem);
+      }
+
+      .contact-copy p {
+        font-size: 1.02rem;
+        line-height: 1.72;
+      }
+
+      .email-link {
+        font-size: 1.12rem;
+      }
+
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-panel img {
+        max-width: 150px;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="page">
     <nav class="nav">
       <div class="logo">
         <div class="logo-badge" aria-hidden="true">
           <img src="assets/icon.png" alt="GoJULI icon" />
         </div>
-        GoJULI
+        <span>GoJULI</span>
       </div>
-      <div class="nav-cta">
+
+      <div class="nav-actions">
         <a class="chip" href="privacy.html" data-i18n="nav.privacy">Privacy</a>
         <a class="chip" href="#contact" data-i18n="nav.contact">Contact</a>
         <button class="chip lang-toggle" id="langToggle" aria-label="Switch language">
-          <span class="dot" aria-hidden="true"></span>
+          <span class="lang-dot" aria-hidden="true"></span>
           <span id="langLabel">中文</span>
         </button>
       </div>
     </nav>
 
-    <section class="hero">
-      <div>
-        <h1 data-i18n="hero.title">Travel diary</h1>
-        <p class="lead" data-i18n="hero.lead">Plan trips, split costs fairly, and keep a beautiful diary with your crew. Build your travel community and remember every moment.</p>
+    <section class="hero-shell screen-section hero-screen" data-screen>
+      <div class="hero-copy">
+        <p class="eyebrow" data-i18n="hero.kicker">Travel together, remember better</p>
+        <h1 data-i18n="hero.title">A softer, smarter way to travel in sync.</h1>
+        <p class="lead" data-i18n="hero.lead">
+          GoJULI keeps plans, payments, and personal memories in one beautifully calm space, so your crew can focus on the trip instead of the chaos.
+        </p>
 
         <div class="cta" role="group" aria-label="Download">
-          <a class="store-btn apple" href="https://apps.apple.com/app/gojuli/id6754033365" aria-label="Download on the App Store" aria-disabled="true">
+          <a class="store-btn apple" href="https://apps.apple.com/app/gojuli/id6754033365" aria-label="Download on the App Store">
             <span class="tile" aria-hidden="true">
               <img src="assets/Apple.svg" alt="" />
             </span>
@@ -258,8 +993,7 @@
             </span>
           </a>
 
-
-          <a class="store-btn play" href="#" aria-label="Get it on Google Play" aria-disabled="true">
+          <a class="store-btn play" href="#" aria-label="Get it on Google Play">
             <span class="tile" aria-hidden="true">
               <img src="assets/Google-Play.png" alt="" />
             </span>
@@ -269,144 +1003,544 @@
             </span>
           </a>
         </div>
-
-        <div class="badges" style="margin-top:14px">
-          <span class="badge" data-i18n="badges.buddies">Travel buddies</span>
-          <span class="badge" data-i18n="badges.expenses">Shared expenses</span>
-          <span class="badge" data-i18n="badges.diary">Diary records</span>
-          <span class="badge" data-i18n="badges.multi">Multi-language</span>
-        </div>
       </div>
 
-      <div class="card shot">
-        <img src="assets/juli_welcome.png" alt="GoJULI preview" />
-      </div>
-    </section>
-
-    <section aria-label="features">
-      <div class="features">
-        <div class="card feat">
-          <div class="feat-icon">
-            <img src="assets/juli_and_99.png" alt="Community" />
-          </div>
-          <h3 data-i18n="features.buddies.title">Travel buddies</h3>
-          <p class="muted" data-i18n="features.buddies.body">Invite friends to your diary, see who’s on the trip, and coordinate plans together. Keep everyone in sync.</p>
-        </div>
-
-        <div class="card feat">
-          <div class="feat-icon">
-            <img src="assets/juli_happy.png" alt="Diary" />
-          </div>
-          <h3 data-i18n="features.diary.title">Diary records</h3>
-          <p class="muted" data-i18n="features.diary.body">Capture moments, add notes, and link them to your trip schedules. Your stories stay organized and easy to revisit.</p>
-        </div>
-
-        <div class="card feat">
-          <div class="feat-icon">
-            <img src="assets/juli_say_no.png" alt="Expenses & AA split" />
-          </div>
-          <h3 data-i18n="features.expenses.title">Expenses</h3>
-          <p class="muted" data-i18n="features.expenses.body">Record expense items, pick participants, and GoJULI automatically calculates equal-share amounts with a transparent breakdown.</p>
+      <div class="hero-stage" aria-label="GoJULI preview stage">
+        <div class="shot-frame">
+          <img src="assets/juli_welcome.png" alt="GoJULI app welcome screen" />
         </div>
       </div>
     </section>
 
-    <section id="contact" style="margin-top:40px">
-      <div class="card">
-        <h3 style="margin:0 0 8px" data-i18n="contact.title">Contact</h3>
-        <p class="muted">
-          <span data-i18n="contact.body">Questions or feedback? Email us at</span>
-          <a href="mailto:spideycj020405@gmail.com">spideycj020405@gmail.com</a>
+    <section class="section screen-section" data-screen aria-labelledby="community-title">
+      <div class="screen-layout">
+        <div class="screen-copy">
+          <span class="screen-kicker" data-i18n="story.eyebrow">Why it feels different</span>
+          <h2 id="community-title" data-i18n="cards.community.title">Bring the whole travel crew into one calm space.</h2>
+        </div>
+
+        <div class="screen-visual screen-visual-crew" aria-hidden="true">
+          <img src="assets/juli_and_99.png" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section screen-section" data-screen aria-labelledby="diary-title">
+      <div class="screen-layout">
+        <div class="screen-copy">
+          <span class="screen-kicker" data-i18n="cards.visual.pill">Diary-first</span>
+          <h2 id="diary-title" data-i18n="cards.visual.caption">A visual diary that stays soft, organized, and worth revisiting after the trip.</h2>
+          <p data-i18n="cards.visual.body">
+            Keep moments, feelings, and shared context in one place, so the trip still feels vivid long after everyone gets home.
+          </p>
+        </div>
+
+        <div class="screen-visual screen-visual-diary" aria-hidden="true">
+          <img src="assets/jacaranda_proposal.png" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section screen-section" data-screen aria-labelledby="expense-title">
+      <div class="screen-layout">
+        <div class="screen-copy">
+          <span class="screen-kicker" data-i18n="signals.three.title">Settle</span>
+          <h2 id="expense-title" data-i18n="cards.expense.title">Expense tracking that protects the mood.</h2>
+          <p data-i18n="cards.expense.body">
+            Add who joined each payment, let GoJULI calculate the equal split, and keep every amount easy to explain later.
+          </p>
+        </div>
+
+        <div class="screen-visual screen-visual-expense" aria-hidden="true">
+          <span class="expense-chip expense-chip-a" data-i18n="expenseChips.auto">自动均摊</span>
+          <span class="expense-chip expense-chip-b" data-i18n="expenseChips.people">参与人清楚</span>
+          <span class="expense-chip expense-chip-c" data-i18n="expenseChips.mood">不破坏气氛</span>
+          <img src="assets/juli_say_no.png" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section screen-section" data-screen aria-labelledby="journey-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-i18n="journey.eyebrow">How GoJULI works</p>
+          <h2 id="journey-title" data-i18n="journey.title">One trip, three easy beats.</h2>
+        </div>
+        <p data-i18n="journey.lead">
+          The flow stays lightweight: get everyone aligned, capture the journey as it happens, then wrap up the costs without friction.
         </p>
       </div>
+
+      <div class="journey-grid">
+        <article class="step-card">
+          <span class="step-no">01</span>
+          <h3 data-i18n="journey.steps.one.title">Set the trip up together</h3>
+          <p data-i18n="journey.steps.one.body">
+            Create the trip, invite the crew, and make sure everyone can see the same plan from the start.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <span class="step-no">02</span>
+          <h3 data-i18n="journey.steps.two.title">Capture what matters while you travel</h3>
+          <p data-i18n="journey.steps.two.body">
+            Add notes, memories, and day-to-day context while the experience is still fresh and vivid.
+          </p>
+        </article>
+
+        <article class="step-card">
+          <span class="step-no">03</span>
+          <h3 data-i18n="journey.steps.three.title">Split and settle with clarity</h3>
+          <p data-i18n="journey.steps.three.body">
+            Record payments, choose participants, and let the app handle the fair-share calculation for you.
+          </p>
+        </article>
+      </div>
     </section>
 
-    <footer class="foot">
-      <div>© <span id="y"></span> GoJULI</div>
-      <div class="badges">
-        <a class="badge" href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+    <section class="section screen-section" data-screen id="contact" aria-labelledby="contact-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow" data-i18n="contact.eyebrow">Stay in touch</p>
+          <h2 id="contact-title" data-i18n="contact.title">Questions, ideas, or early feedback?</h2>
+        </div>
       </div>
-    </footer>
+
+      <div class="contact-panel">
+        <div class="contact-copy">
+          <p data-i18n="contact.body">
+            We would love to hear how you travel, what you want to track, and where GoJULI can feel even better for your group.
+          </p>
+          <p>
+            <a class="email-link" href="mailto:spideycj020405@gmail.com">spideycj020405@gmail.com</a>
+          </p>
+        </div>
+        <img src="assets/juli_happy.png" alt="JULI mascot waving" />
+      </div>
+      <footer class="footer">
+        <div>© <span id="y"></span> GoJULI</div>
+        <div class="badge-row" style="margin-top: 0">
+          <a class="badge" href="privacy.html" data-i18n="footer.privacy">Privacy Policy</a>
+        </div>
+      </footer>
+    </section>
   </div>
+
   <script>
-    document.getElementById("y").textContent=new Date().getFullYear();
+    document.getElementById("y").textContent = new Date().getFullYear();
 
     const TRANSLATIONS = {
       en: {
-        nav: { privacy: "Privacy", contact: "Contact" },
-        hero: { title: "Travel diary", lead: "Plan trips, split costs fairly, and keep a beautiful diary with your crew. Build your travel community and remember every moment." },
+        nav: {
+          privacy: "Privacy",
+          contact: "Contact"
+        },
+        hero: {
+          kicker: "Travel together, remember better",
+          title: "A softer, smarter way to travel in sync.",
+          lead: "GoJULI keeps plans, payments, and personal memories in one beautifully calm space, so your crew can focus on the trip instead of the chaos."
+        },
         buttons: {
-          apple: { eyebrow: "Download on the", title: "App Store", aria: "Download on the App Store" },
-          play:  { eyebrow: "Get it on",       title: "Google Play", aria: "Get it on Google Play" }
+          apple: {
+            eyebrow: "Download on the",
+            title: "App Store",
+            aria: "Download on the App Store"
+          },
+          play: {
+            eyebrow: "Get it on",
+            title: "Google Play",
+            aria: "Get it on Google Play"
+          }
         },
-        badges: { buddies: "Travel buddies", expenses: "Shared expenses", diary: "Diary records", multi: "Multi-language" },
-        features: {
-          buddies: { title: "Travel buddies", body: "Invite friends to your diary, see who’s on the trip, and coordinate plans together. Keep everyone in sync." },
-          diary:   { title: "Diary records",  body: "Capture moments, add notes, and link them to your trip schedules. Your stories stay organized and easy to revisit." },
-          expenses:{ title: "Expenses",        body: "Record expense items, pick participants, and GoJULI automatically calculates equal-share amounts with a transparent breakdown." }
+        stats: {
+          one: {
+            value: "Trip planning",
+            label: "Keep your itinerary and travel crew moving on the same rhythm."
+          },
+          two: {
+            value: "Shared expenses",
+            label: "Track who paid, split fairly, and avoid awkward money math mid-trip."
+          },
+          three: {
+            value: "Travel diary",
+            label: "Turn every stop into a memory log you can actually revisit later."
+          }
         },
-        contact: { title: "Contact", body: "Questions or feedback? Email us at" },
-        footer: { privacy: "Privacy Policy" },
+        badges: {
+          one: "Travel buddies",
+          two: "Equal split",
+          three: "Diary moments",
+          four: "Bilingual ready"
+        },
+        notes: {
+          one: {
+            title: "Crew synced",
+            body: "A shared diary that still feels personal, warm, and easy to glance through."
+          },
+          two: {
+            title: "Bills feel lighter",
+            body: "Shared expense tracking keeps the group fair without turning the trip into a spreadsheet."
+          }
+        },
+        mascots: {
+          one: "Moments",
+          two: "Together",
+          three: "No mess"
+        },
+        signals: {
+          one: {
+            title: "Plan",
+            body: "Keep itinerary details, people, and timing lined up in one clear place."
+          },
+          two: {
+            title: "Capture",
+            body: "Save notes, scenes, and reflections as the trip unfolds instead of after it fades."
+          },
+          three: {
+            title: "Settle",
+            body: "Split costs transparently so the group leaves with memories, not accounting stress."
+          }
+        },
+        story: {
+          eyebrow: "Why it feels different",
+          title: "Designed like a keepsake, not a utility.",
+          lead: "GoJULI works best when planning, journaling, and money-sharing stop feeling like separate chores and start feeling like one smooth rhythm."
+        },
+        cards: {
+          community: {
+            title: "Bring the whole travel crew into one calm space.",
+            body: "Invite friends, see who is on the trip, and keep every update in a place that feels welcoming instead of overwhelming."
+          },
+          expense: {
+            title: "Expense tracking that protects the mood.",
+            body: "Add who joined each payment, let GoJULI calculate the equal split, and keep every amount easy to explain later."
+          },
+          visual: {
+            caption: "A visual diary that stays soft, organized, and worth revisiting after the trip.",
+            body: "Keep moments, feelings, and shared context in one place, so the trip still feels vivid long after everyone gets home.",
+            pill: "Diary-first"
+          },
+          diary: {
+            title: "Mascots that make the experience warmer.",
+            body: "JULI keeps the interface light and friendly, so even logistics-heavy tasks still feel like part of the journey."
+          }
+        },
+        expenseChips: {
+          auto: "Auto split",
+          people: "Clear participants",
+          mood: "Keep it light"
+        },
+        journey: {
+          eyebrow: "How GoJULI works",
+          title: "One trip, three easy beats.",
+          lead: "The flow stays lightweight: get everyone aligned, capture the journey as it happens, then wrap up the costs without friction.",
+          steps: {
+            one: {
+              title: "Set the trip up together",
+              body: "Create the trip, invite the crew, and make sure everyone can see the same plan from the start."
+            },
+            two: {
+              title: "Capture what matters while you travel",
+              body: "Add notes, memories, and day-to-day context while the experience is still fresh and vivid."
+            },
+            three: {
+              title: "Split and settle with clarity",
+              body: "Record payments, choose participants, and let the app handle the fair-share calculation for you."
+            }
+          }
+        },
+        contact: {
+          eyebrow: "Stay in touch",
+          title: "Questions, ideas, or early feedback?",
+          body: "We would love to hear how you travel, what you want to track, and where GoJULI can feel even better for your group."
+        },
+        footer: {
+          privacy: "Privacy Policy"
+        },
         langLabel: "中文"
       },
       zh: {
-        nav: { privacy: "隐私政策", contact: "联系" },
-        hero: { title: "旅行日记", lead: "一起计划行程、AA 均摊费用，用优雅的日记记录每个瞬间，和旅伴们建立你的旅行社区。" },
+        nav: {
+          privacy: "隐私政策",
+          contact: "联系"
+        },
+        hero: {
+          kicker: "一起出发，也一起留下回忆",
+          title: "更温柔，也更聪明的结伴旅行方式。",
+          lead: "GoJULI 把行程、费用和旅行记忆放进同一个轻盈空间里，让你和旅伴把注意力留给旅程，而不是留给混乱。"
+        },
         buttons: {
-          apple: { eyebrow: "在", title: "App Store 下载", aria: "在 App Store 下载" },
-          play:  { eyebrow: "前往", title: "Google Play 获取", aria: "前往 Google Play 获取" }
+          apple: {
+            eyebrow: "在",
+            title: "App Store 下载",
+            aria: "在 App Store 下载"
+          },
+          play: {
+            eyebrow: "前往",
+            title: "Google Play 获取",
+            aria: "前往 Google Play 获取"
+          }
         },
-        badges: { buddies: "旅伴社区", expenses: "共享账本", diary: "日记记录", multi: "多语言" },
-        features: {
-          buddies: { title: "旅伴社区", body: "邀请好友加入日记，查看同行成员，一起协同安排行程，让每个人都保持同步。" },
-          diary:   { title: "日记记录", body: "捕捉每个精彩瞬间、添加备注，并与行程日历关联，故事清晰易于回看。" },
-          expenses:{ title: "共享账本", body: "记录消费、选择参与者，GoJULI 自动按人头均摊，并提供透明明细。" }
+        stats: {
+          one: {
+            value: "行程规划",
+            label: "让日程、同行成员与节奏保持一致，出发前就更安心。"
+          },
+          two: {
+            value: "共享账本",
+            label: "记录谁付了钱、如何均摊，旅途中不再临时心算。"
+          },
+          three: {
+            value: "旅行日记",
+            label: "把每一站的瞬间留下来，回看时仍然有温度。"
+          }
         },
-        contact: { title: "联系", body: "有问题或建议？给我们发邮件：" },
-        footer: { privacy: "隐私政策" },
+        badges: {
+          one: "旅伴社区",
+          two: "公平均摊",
+          three: "旅程记录",
+          four: "双语切换"
+        },
+        notes: {
+          one: {
+            title: "旅伴同步",
+            body: "共享日记依然保留个人感受，浏览起来也轻松自然。"
+          },
+          two: {
+            title: "账单更轻松",
+            body: "共享费用记录让每个人都清楚明白，不必把旅行过成表格。"
+          }
+        },
+        mascots: {
+          one: "瞬间",
+          two: "同行",
+          three: "不混乱"
+        },
+        signals: {
+          one: {
+            title: "规划",
+            body: "把行程细节、同行成员和时间安排放在一个清晰入口里。"
+          },
+          two: {
+            title: "记录",
+            body: "边走边写下笔记、风景与感受，不让回忆只停留在脑海里。"
+          },
+          three: {
+            title: "结算",
+            body: "透明均摊每笔消费，让旅程结束时留下的是回忆而不是压力。"
+          }
+        },
+        story: {
+          eyebrow: "为什么它感觉不一样",
+          title: "它更像一本旅行纪念册，而不是工具。",
+          lead: "当规划、记日记和共享费用不再是分开的任务，整个旅行流程就会自然地连成一个温柔节奏。"
+        },
+        cards: {
+          community: {
+            title: "把整组旅伴都放进一个安静舒服的空间里。",
+            body: "邀请朋友加入、查看同行成员，把每次更新都留在一个不吵不乱、愿意常打开的地方。"
+          },
+          expense: {
+            title: "费用记录也能不破坏气氛。",
+            body: "记下谁参与了付款，让 GoJULI 自动均摊，每一笔金额之后都还讲得清楚。"
+          },
+          visual: {
+            caption: "视觉化的旅行日记既柔和又有条理，旅程结束后也依然值得回看。",
+            body: "把瞬间、情绪和同行的共同记忆都留在一起，这样旅程结束以后仍然能被完整地重新打开。",
+            pill: "日记优先"
+          },
+          diary: {
+            title: "Mascot 让整个体验更有温度。",
+            body: "JULI 让界面保持轻松与亲近感，就算在处理琐碎事项，也还是像旅程的一部分。"
+          }
+        },
+        expenseChips: {
+          auto: "自动均摊",
+          people: "参与人清楚",
+          mood: "不破坏气氛"
+        },
+        journey: {
+          eyebrow: "GoJULI 的使用节奏",
+          title: "一次旅行，三个轻松步骤。",
+          lead: "先把大家对齐，再边走边记录，最后把费用收尾，整个过程都尽量轻量、顺畅。",
+          steps: {
+            one: {
+              title: "先把旅程一起建起来",
+              body: "创建行程、邀请旅伴，从一开始就让每个人看到同一份安排。"
+            },
+            two: {
+              title: "旅行中及时留下重要瞬间",
+              body: "趁体验还新鲜，把笔记、回忆与当天情绪一起记录下来。"
+            },
+            three: {
+              title: "最后清楚地完成均摊结算",
+              body: "记录消费、选择参与者，让应用替你完成公平分账。"
+            }
+          }
+        },
+        contact: {
+          eyebrow: "保持联系",
+          title: "有想法、问题，或想提早反馈？",
+          body: "我们很想知道你是怎么旅行的、你希望记录什么，以及 GoJULI 还能怎样更贴近你的旅伴小组。"
+        },
+        footer: {
+          privacy: "隐私政策"
+        },
         langLabel: "EN"
       }
     };
 
-    const $ = (sel,root=document)=>root.querySelector(sel);
-    const $$ = (sel,root=document)=>Array.from(root.querySelectorAll(sel));
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-    function applyTranslations(lang){
+    function applyTranslations(lang) {
       const dict = TRANSLATIONS[lang] || TRANSLATIONS.en;
-      // Text nodes
-      $$('[data-i18n]').forEach(el=>{
-        const key = el.getAttribute('data-i18n').split('.').reduce((acc,cur)=>acc&&acc[cur], dict);
-        if(typeof key === 'string'){ el.textContent = key; }
+
+      $$("[data-i18n]").forEach((element) => {
+        const value = element
+          .getAttribute("data-i18n")
+          .split(".")
+          .reduce((acc, key) => acc && acc[key], dict);
+
+        if (typeof value === "string") {
+          element.textContent = value;
+        }
       });
-      // Title/meta
-      document.title = lang==='zh' ? 'GoJULI — 旅行日记 & 旅伴' : 'GoJULI — Travel Diary & Travel Buddies';
+
+      document.title = lang === "zh"
+        ? "GoJULI — 旅行日记 & 旅伴"
+        : "GoJULI — Travel Diary & Travel Buddies";
+
       const metaDesc = $('meta[name="description"]');
-      if(metaDesc){ metaDesc.setAttribute('content', lang==='zh' ? 'GoJULI：旅行日记、共享账本与旅伴社区。规划行程、记录支付、与旅伴一起玩。' : 'GoJULI is a travel diary with shared expenses and travel buddies. Plan trips, track payments, and build your travel community.'); }
+      if (metaDesc) {
+        metaDesc.setAttribute(
+          "content",
+          lang === "zh"
+            ? "GoJULI：把旅行日记、共享账本与旅伴社区放进同一个轻盈空间里，规划行程、记录支付，也记录回忆。"
+            : "GoJULI is a travel diary with shared expenses and travel buddies. Plan trips, track payments, and build your travel community."
+        );
+      }
+
       const ogDesc = $('meta[property="og:description"]');
-      if(ogDesc){ ogDesc.setAttribute('content', lang==='zh' ? '规划行程、AA 均摊、与旅伴一起写下美好旅行日记。' : 'Plan trips, split costs, and keep a beautiful diary with your travel buddies.'); }
-      // aria-labels for store buttons
-      const apple = $('.store-btn.apple');
-      const play  = $('.store-btn.play');
-      if(apple){ apple.setAttribute('aria-label', dict.buttons.apple.aria); }
-      if(play){  play.setAttribute('aria-label',  dict.buttons.play.aria ); }
-      // html lang & toggle label
-      document.documentElement.lang = lang==='zh' ? 'zh' : 'en';
-      $('#langLabel').textContent = dict.langLabel;
+      if (ogDesc) {
+        ogDesc.setAttribute(
+          "content",
+          lang === "zh"
+            ? "规划行程、AA 均摊、和旅伴一起写下柔和又清晰的旅行记忆。"
+            : "Plan trips, split costs, and keep a beautiful diary with your travel buddies."
+        );
+      }
+
+      const apple = $(".store-btn.apple");
+      const play = $(".store-btn.play");
+
+      if (apple) {
+        apple.setAttribute("aria-label", dict.buttons.apple.aria);
+      }
+
+      if (play) {
+        play.setAttribute("aria-label", dict.buttons.play.aria);
+      }
+
+      document.documentElement.lang = lang === "zh" ? "zh" : "en";
+      $("#langLabel").textContent = dict.langLabel;
     }
 
-    function getInitialLang(){
-      const saved = localStorage.getItem('gojuli_lang');
-      if(saved) return saved;
-      const sys = navigator.language || navigator.userLanguage || 'en';
-      return /^zh/i.test(sys) ? 'zh' : 'en';
+    function getInitialLang() {
+      const saved = localStorage.getItem("gojuli_lang");
+      if (saved) {
+        return saved;
+      }
+
+      const systemLanguage = navigator.language || navigator.userLanguage || "en";
+      return /^zh/i.test(systemLanguage) ? "zh" : "en";
     }
 
-    const current = getInitialLang();
-    applyTranslations(current);
+    function initSectionScroller() {
+      const sections = $$("[data-screen]");
 
-    $('#langToggle').addEventListener('click', ()=>{
-      const next = document.documentElement.lang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('gojuli_lang', next);
+      if (!sections.length) {
+        return;
+      }
+
+      let isLocked = false;
+      let activeSectionIndex = 0;
+
+      const getClosestSectionIndex = () => {
+        let closestIndex = 0;
+        let closestDistance = Number.POSITIVE_INFINITY;
+
+        sections.forEach((section, index) => {
+          const distance = Math.abs(section.offsetTop - window.scrollY);
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            closestIndex = index;
+          }
+        });
+
+        return closestIndex;
+      };
+
+      const scrollToSection = (index) => {
+        const target = sections[index];
+        if (!target) {
+          return;
+        }
+
+        activeSectionIndex = index;
+
+        window.scrollTo({
+          top: target.offsetTop,
+          behavior: "smooth",
+          left: 0
+        });
+      };
+
+      const syncActiveSection = () => {
+        activeSectionIndex = getClosestSectionIndex();
+      };
+
+      const handleWheel = (event) => {
+        if (window.matchMedia("(max-width: 1024px)").matches) {
+          return;
+        }
+
+        if (isLocked || Math.abs(event.deltaY) < 12) {
+          return;
+        }
+
+        const direction = event.deltaY > 0 ? 1 : -1;
+        const nextIndex = Math.min(
+          sections.length - 1,
+          Math.max(0, activeSectionIndex + direction)
+        );
+
+        if (nextIndex === activeSectionIndex) {
+          return;
+        }
+
+        event.preventDefault();
+        isLocked = true;
+        scrollToSection(nextIndex);
+
+        window.setTimeout(() => {
+          syncActiveSection();
+          isLocked = false;
+        }, 680);
+      };
+
+      syncActiveSection();
+      window.addEventListener("scroll", syncActiveSection, { passive: true });
+      window.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
+    const initialLanguage = getInitialLang();
+    applyTranslations(initialLanguage);
+    initSectionScroller();
+
+    $("#langToggle").addEventListener("click", () => {
+      const next = document.documentElement.lang === "zh" ? "en" : "zh";
+      localStorage.setItem("gojuli_lang", next);
       applyTranslations(next);
     });
   </script>
